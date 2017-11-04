@@ -1,0 +1,51 @@
+@import 'globals';
+
+@include react-md-everything;
+
+body {
+  margin: 0;
+}
+
+.tabs__page-layout {
+  .md-tab--inactive {
+    color: get-color('secondary', $md-light-theme);
+  }
+}
+
+.md-background--primary .md-card-title--title {
+  color: #fff;
+}
+
+.pmi-font-blue {
+  color: #0065bd
+}
+
+.text-overflow-ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden
+}
+
+.specialLink:link,
+.specialLink:visited,
+.specialLink:active,
+.specialLink:hover {
+  color: #0065bd !important;
+  text-decoration: none !important;
+}
+
+.dropzone-file {
+  border: 2px dashed #5c5c5c;
+  color: #5c5c5c;
+  border-radius: 5px
+}
+
+.dropzone-file-active {
+  border: 2px solid #0065bd;
+  color: #0065bd;
+  font-weight: bold;
+}
+
+.dropzone-file-active i {
+  color: #0065bd;
+}
