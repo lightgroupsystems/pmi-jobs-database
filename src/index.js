@@ -6,7 +6,7 @@ import firebase from 'firebase';
 import { Router } from 'react-router-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import browserHistory from './browserHistory';
-import fbConfig from 'firebaseConfiguration';
+import fbConfig from './firebaseConfiguration';
 
 import App from './AppContainer';
 import './index.css';
