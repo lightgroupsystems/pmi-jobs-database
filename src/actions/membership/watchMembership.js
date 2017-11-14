@@ -12,7 +12,6 @@ export const watchAuth = () => {
             {
                 const userID = auth.uid;
                 const emailVerified = auth.emailVerified;
-
                 doUserAuthChanged(dispatch, userID, emailVerified);
             }
             else // sign out

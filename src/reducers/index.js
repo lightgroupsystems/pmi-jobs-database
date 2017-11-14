@@ -3,10 +3,12 @@ import membership from './membership';
 import notifications from './notifications';
 import profile from './profile';
 import resumes from './resumes';
+import admin from './admin';
 
 export default combineReducers({
     membership,
     notifications,
     profile,
-    resumes
+    resumes,
+    admin
 });

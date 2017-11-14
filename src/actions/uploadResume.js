@@ -2,17 +2,14 @@ import firebase from 'firebase';
 import actionTypes from '../constants/resumeTypes';
 import {sendNotification} from './notifications';
 
-export const uploadResume = (file) => {
+export const uploadResume = (userID,file) => {
     return (dispatch, getState) => {
-        if (!getState().membership.currentUserID) {
+        if (!userID) {
             dispatch(sendNotification("Error on upload your resume"));
             return;
         }
 
-        const userID = getState().membership.currentUserID;
-
         dispatch(uploadResumeBegin());
-
         let resumeRef = firebase.storage().ref(`/users/${userID}/resume.pdf`);
 
         return resumeRef.put(file)

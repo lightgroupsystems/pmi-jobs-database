@@ -12,11 +12,11 @@ import Profile from './containers/ProfileContainer';
 import SignIn from './containers/SignInContainer';
 import Register from './containers/RegisterContainer';
 import NotificationsViewer from "./containers/NotificationsViewerContainer";
+import Admin from './containers/AdminContainer';
 import Lobby from "./containers/LobbyContainer";
 import Recovery from "./containers/RecoveryContainer";
 import Help from "./views/Help";
 import Jobs from "./views/Jobs";
-import Admin from "./views/Admin";
 import Toolbar from "react-md/lib/Toolbars/Toolbar";
 import RedirectDefault from "./components/RedirectDefault";
 
@@ -41,12 +41,6 @@ const navItems = [
             isMember: true,
         }
     },
-    // {
-    //     exact: true,
-    //     label: 'Feed',
-    //     to: '/feed',
-    //     icon: 'forum',
-    // },
     {
         exact: true,
         label: 'Admin',
@@ -145,7 +139,6 @@ class App extends Component {
             )
         }
     }
-
     render() {
         return (
             <Route
