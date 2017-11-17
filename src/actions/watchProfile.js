@@ -11,7 +11,6 @@ export const watchProfile = () => {
         return firebase.database().ref(`users/${userID}`).on('value', snap => {
 
             let userInfo = snap.val();
-
             dispatch(profileChanged(userInfo));
 
         })

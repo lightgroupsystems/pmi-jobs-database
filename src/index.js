@@ -32,4 +32,3 @@ injectTapEventPlugin();
 
 // updating app on background
 registerServiceWorker();
-
