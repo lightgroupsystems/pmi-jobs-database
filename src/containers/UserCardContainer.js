@@ -6,6 +6,7 @@ import {sendNotification} from "../actions/notifications";
 
 const mapStateToProps = (state) => {
     return ({
+      isLoading: state.membership.isLoading
     });
 }
 

@@ -1,4 +1,4 @@
-import actionTypes from '../constants/profileTypes';
+import actionTypes from '../constants/adminTypes';
 
 const initialState =
 {
@@ -7,7 +7,7 @@ const initialState =
 
 export default function admin(state = initialState, action) {
     switch (action.type) {
-        case actionTypes.ProfileInfoChanged:
+        case actionTypes.UsersChanged:
             return {...state, users: action.payload};
         default:
             return state;

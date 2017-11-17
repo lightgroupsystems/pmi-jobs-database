@@ -12,14 +12,11 @@ class Profile extends Component {
         this.props.offWatchProfile();
     }
     render() {
-        const {email, memberID, name, resume, resumeDate} = this.props.user;
-        const isLoading = this.props.isLoading;
-        return (<UserCard id='user-card' userID={this.props.userID} name={name} isLoading={isLoading} email={email} resume={resume} resumeDate={resumeDate} showDropArea={true} memberID={memberID}/>);
+        return (<UserCard id='user-card' showDropArea={true} user={this.props.user}/>);
     }
 }
 
 Profile.propTypes = {
-    userID: PropTypes.string.isRequired,
     user: PropTypes.any,
     isLoading: PropTypes.bool,
     watchProfile: PropTypes.func.isRequired,

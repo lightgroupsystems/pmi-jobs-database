@@ -1,16 +1,24 @@
 import firebase from 'firebase';
-import actionTypes from '../../constants/profileTypes';
+import actionTypes from '../../constants/adminTypes';
 
 export const watchUsers = () => {
     return (dispatch, getState) => {
         return firebase.database().ref(`users`).on('value', snap => {
             var users = [];
+            var promises = [];
             snap.forEach((item) =>{
               var val = item.val();
               val.userID = item.key;
-              users.push(val);
+              promises.push(firebase.database().ref(`clearances/${val.userID}`).once('value', snap => {
+                var clearances = snap.val();
+                val.clearances = clearances;
+                users.push(val);
+              }));
             });
-            dispatch(profileChanged(users));
+            Promise.all(promises)
+              .then((values) =>{
+                dispatch(usersChanged(users));
+              });
         })
     }
 }
@@ -21,9 +29,9 @@ export const offWatchUsers = () => {
     }
 }
 
-const profileChanged = (users) => {
+const usersChanged = (users) => {
     return {
-        type: actionTypes.ProfileInfoChanged,
+        type: actionTypes.UsersChanged,
         payload: users
     }
 }

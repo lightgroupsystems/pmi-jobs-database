@@ -56,9 +56,8 @@ class Admin extends Component {
           case "users":
             var userComponents =  [];
             for (var i=0; i < this.props.users.length; i++) {
-                const {userID,email, memberID, name, resume, resumeDate} = this.props.users[i];
                 userComponents.push(
-                    <UserCard key={i} userID={userID} name={name} isLoading={false} email={email} resume={resume} resumeDate={resumeDate} showDropArea={false} memberID={memberID}/>
+                    <UserCard key={i} showDropArea={false} user={this.props.users[i]}/>
                 );
             }
             content =   <div className="md-grid">
