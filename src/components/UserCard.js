@@ -5,6 +5,7 @@ import CardTitle from "react-md/lib/Cards/CardTitle";
 import Card from "react-md/lib/Cards/Card";
 import {Switch,TextField } from "react-md";
 import LinearLoading from "../components/LinearLoading";
+import actionTypes from '../constants/userCardTypes';
 
 import FontIcon from 'react-md/lib/FontIcons';
 
@@ -22,7 +23,8 @@ class UserCard extends Component {
           editMode: false
         };
         this.handleDropFile = this.handleDropFile.bind(this);
-        this.changeEditMode = this.changeEditMode.bind(this);
+        // this.changeEditMode = this.changeEditMode.bind(this);
+        // console.log(this.changeEditMode);
     }
 
     handleDropFile(acceptedFiles, rejectedFiles) {
@@ -39,14 +41,23 @@ class UserCard extends Component {
         }
         this.props.uploadResume(this.props.user.userID,acceptedFiles[0]);
     }
-    changeIsAdmin(){
-
+    changeIsAdmin = (event) =>{
+        console.log(event);
+        this.props.dispatch({
+            type: actionTypes.isAdminChanged,
+            payload: event
+        });
     }
-    changeIsMember(){
-
+    changeIsMember = (event) =>{
+        console.log(event);
+        console.log(this);
+        this.props.dispatch({
+            type: actionTypes.isMemberChanged,
+            payload: event
+        });
     }
-    changeEditMode(event){
-      this.setState({editMode: event});
+    changeEditMode = (event) =>{
+        this.setState({editMode: event});
     }
     changeMemberID(event){
     }
@@ -78,16 +89,15 @@ class UserCard extends Component {
           <div key={3} className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone md-font-bold">Is Member:&nbsp;</div>,
           <div key={4} className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><Switch id="member-checkbox" name="is-admin" aria-label="Is Member" onChange={this.changeIsMember} checked={clearances.isMember} disabled={!this.state.editMode}/></div>
         ];
-      }
+      };
       return (
-        // <div className="md-grid">
           <Card className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone">
               <LinearLoading id="register-loading" isLoading={isLoading}/>
               <div className="md-grid">
-                <div className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis">
+                <div className="md-cell md-cell--6 md-cell--12-tablet md-cell--12-phone text-overflow-ellipsis">
                   <CardTitle title={name}/>
                 </div>
-                <div className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone md-font-bold">
+                <div className="md-cell md-cell--6 md-cell--12-tablet md-cell--12-phone md-font-bold">
                   <CardText>
                     <Switch id="edit-checkbox" name="edit-mode" label="Edit Mode" onChange={this.changeEditMode} checked={this.state.editMode}/>
                   </CardText>
@@ -101,12 +111,6 @@ class UserCard extends Component {
                       <div className="md-cell md-cell--12 md-cell--12-tablet md-cell--12-phone text-overflow-ellipsis">
                         <TextField id="member-id" value={email} label="Email" onChange={this.changeMemberID}  />
                       </div>
-                      {
-                      // <div className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone md-font-bold">Member ID:&nbsp;</div>
-                      // <div className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis">{memberID}</div>
-                      // <div className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone md-font-bold">Email:&nbsp;</div>
-                      // <div className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis">{email}</div>
-                      }
                       {clearancesComp}
                       {resumeComp}
                   </div>
@@ -114,7 +118,6 @@ class UserCard extends Component {
                   {dropZone}
               </CardText>
           </Card>
-        // </div>
       );
     }
 }
@@ -124,7 +127,8 @@ UserCard.propTypes = {
     isLoading: PropTypes.bool.isRequired,
 
     sendNotification: PropTypes.func.isRequired,
-    uploadResume: PropTypes.func.isRequired
+    uploadResume: PropTypes.func.isRequired,
+    dispatch: PropTypes.func
 };
 
 export default UserCard;

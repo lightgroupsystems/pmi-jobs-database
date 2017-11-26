@@ -13,7 +13,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
       uploadResume,
-      sendNotification
+      sendNotification,
+      dispatch
     }, dispatch)
 }
 
