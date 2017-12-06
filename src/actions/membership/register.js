@@ -2,14 +2,14 @@ import firebase from 'firebase';
 import {membershipBeginAction, membershipRejectAction} from "./shared";
 import {sendNotification} from '../notifications';
 
-export const register = (name, memberID, email, password) => {
+export const register = ({ name, memberID, companyName, email, password, userType }) => {
     return dispatch => {
         dispatch(membershipBeginAction());
 
         let createAuthUser = firebase.auth().createUserWithEmailAndPassword(email, password);
 
         return createAuthUser
-            .then(auth => addNewUser(auth, name, memberID, email))
+            .then(auth => addNewUser({ auth, name, memberID, companyName, email, userType }))
             .then(auth => sendEmailWithSilentErrors(auth))
             .catch(error => {
                 console.error(error);
@@ -19,18 +19,18 @@ export const register = (name, memberID, email, password) => {
     }
 }
 
-const addNewUser = (auth, name, memberID, email) => {
+const addNewUser = ({ auth, name, memberID, companyName, email, userType }) => {
     return new Promise((resolve, reject) => {
 
         const userID = auth.uid;
         const emailVerified = auth.emailVerified;
 
-        let addUser = firebase.database().ref(`users/${userID}`).set({
-            name: name,
-            memberID: memberID,
-            email: email,
-            emailVerified: emailVerified
-        })
+        let fUser = { name, memberID, email, emailVerified, userType };
+
+        if (userType === "company")
+            fUser = { name, companyID: cleanWord(companyName), companyName, email, emailVerified, userType };
+
+        let addUser = firebase.database().ref(`users/${userID}`).set(fUser);
 
         return addUser
             .then(() => resolve(auth))
@@ -54,4 +54,23 @@ const sendEmailWithSilentErrors = (auth) => {
                 resolve();
             });
     });
+}
+
+const cleanWord = (word) => {
+    const letters = "1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
+
+    if(isEmpty(word))
+        return "";
+
+    const upperWord = word.toUpperCase();
+
+    const upperArr = upperWord.split("");
+
+    const filteredArr = upperArr.filter(x => letters.includes(x));
+
+    return filteredArr.slice(0, 20).join("");
+}
+
+const isEmpty = (value) => {
+    return typeof value == 'string' && !value.trim() || typeof value == 'undefined' || value === null;
 }

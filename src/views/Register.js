@@ -9,6 +9,7 @@ import TextField from "react-md/lib/TextFields/TextField";
 import FocusContainer from 'react-md/lib/Helpers/FocusContainer';
 import validator from 'validator';
 import { Link as RouterLink } from 'react-router-dom';
+import FontIcon from 'react-md/lib/FontIcons';
 
 import logo from '../images/pmi-logo.svg';
 import LinearLoading from '../components/LinearLoading';
@@ -19,6 +20,7 @@ const fieldsValidator = {
     email: (value, currentState) => validator.isEmail(value),
     password: (value, currentState) => !validator.isEmpty(value),
     passwordConfirm: (value, currentState) => !validator.isEmpty(value),
+    companyName: (value, currentState) => !validator.isEmpty(value),
 }
 
 class Register extends Component {
@@ -31,6 +33,8 @@ class Register extends Component {
             nameValid: true,
             memberID: "",
             memberIDValid: true,
+            companyName: "",
+            companyNameValid: true,
             email: "",
             emailValid: true,
             password: "",
@@ -38,6 +42,8 @@ class Register extends Component {
             passwordConfirm: "",
             passwordConfirmValid: true,
             passwordMatch: true,
+
+            userType: "member" // TODO: member or company
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -48,7 +54,13 @@ class Register extends Component {
         if (event)
             event.preventDefault();
 
-        this.props.register(this.state.name, this.state.memberID, this.state.email, this.state.password);
+
+        let registerUser = { name: this.state.name, memberID: this.state.memberID, email: this.state.email, password: this.state.password, userType: this.state.userType };
+
+        if (this.state.userType === "company")
+            registerUser = { name: this.state.name, companyName: this.state.companyName, email: this.state.email, password: this.state.password, userType: this.state.userType };
+
+        this.props.register(registerUser);
     }
 
     handleFieldChange = fieldName => value => this.setState({ [fieldName]: value, [`${fieldName}Valid`]: fieldsValidator[fieldName](value, this.state) }, this.validateForm);
@@ -64,12 +76,17 @@ class Register extends Component {
         let emailValid = fieldsValidator.email(this.state.email, this.state);
         let passwordValid = fieldsValidator.password(this.state.password, this.state);
         let passwordConfirmValid = fieldsValidator.passwordConfirm(this.state.passwordConfirm, this.state);
+        let companyNameValid = fieldsValidator.companyName(this.state.companyName, this.state);
         let passwordMatch = this.state.password === this.state.passwordConfirm;
 
-        let allValid = nameValid && memberIDValid && emailValid && passwordValid && passwordConfirmValid && passwordMatch;
+        let isMemberOrCompanyValid = this.state.userType === "member" ? memberIDValid : companyNameValid;
+
+        let allValid = nameValid && isMemberOrCompanyValid && emailValid && passwordValid && passwordConfirmValid && passwordMatch;
 
         this.setState({ allValid, passwordMatch });
     }
+
+    handleUserTypeChange = (userType) => () => this.setState({ userType });
 
     render() {
 
@@ -85,6 +102,10 @@ class Register extends Component {
                         <CardTitle className="md-background--primary" title="Register"  />
                         <LinearLoading id="register-loading" isLoading={isLoading}/>
                         <CardText className="md-grid">
+                            <Button raised primary iconEl={<FontIcon>person</FontIcon>} disabled={this.state.userType === "member"} onClick={this.handleUserTypeChange("member")}>Member</Button>&nbsp;&nbsp;
+                            <Button raised primary iconEl={<FontIcon>business</FontIcon>} disabled={this.state.userType === "company"} onClick={this.handleUserTypeChange("company")}>Company</Button>
+                        </CardText>
+                        <CardText className="md-grid">
                             <TextField
                                 id="name"
                                 label="Name"
@@ -97,7 +118,7 @@ class Register extends Component {
                                 floating={true}
                                 required
                             />
-                            <TextField
+                            {this.state.userType === "member" && <TextField
                                 id="pmiMemberID"
                                 label="Member ID"
                                 type="tel"
@@ -109,7 +130,20 @@ class Register extends Component {
                                 className="md-cell md-cell--6"
                                 floating={true}
                                 required
-                            />
+                            />}
+                            {this.state.userType === "company" && <TextField
+                                id="companyName"
+                                label="Company Name"
+                                type="tel"
+                                onChange={this.handleFieldChange("companyName")}
+                                value={this.state.companyName}
+                                error={!this.state.companyNameValid}
+                                lineDirection="center"
+                                placeholder=""
+                                className="md-cell md-cell--6"
+                                floating={true}
+                                required
+                            />}
                             <TextField
                                 id="email"
                                 label="Email"
