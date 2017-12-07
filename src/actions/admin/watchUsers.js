@@ -69,3 +69,29 @@ export const offWatchUsers = () => {
     return firebase.database().ref(`users`).off();
   }
 }
+
+export const isAdminChanged = (userID, val) => {
+  var updates = {};
+    updates['/clearances/' + userID + '/isAdmin'] = val;
+
+    console.log(firebase.database().ref().update(updates));
+
+    //queda return para que no pinche
+    return {
+        type: actionTypes.ClearanceChanged,
+        payload: {userID}
+    }
+}
+
+export const isMemberChanged = (userID, val) => {
+    var updates = {};
+    updates['/clearances/' + userID + '/isMember'] = val;
+    console.log(updates)
+    console.log(firebase.database().ref().update(updates));
+
+    //queda return para que no pinche
+    return {
+        type: actionTypes.ClearanceChanged,
+        payload: {userID}
+    }
+}

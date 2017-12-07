@@ -27,6 +27,8 @@ class Admin extends Component {
         break;
     }
   }
+
+
   unmountWatch(value) {
     switch (value) {
       case "jobs":
@@ -42,21 +44,24 @@ class Admin extends Component {
   componentWillUnmount() {
     this.unmountWatch(this.props.currentMenuSelected);
   }
+
   componentWillMount() {
     this.mountWatch(this.props.currentMenuSelected);
   }
+
   handleMenuChange = ({ value, index }) => {
     this.unmountWatch(this.props.currentMenuSelected);
     this.mountWatch(value);
     this.setState({ currentMenuSelected: value });
   };
+
   render() {
     console.log("Rendering admin");
     var content;
     switch (this.props.currentMenuSelected) {
       case "users":
         var userComponents = [];
-        var i = 0;
+        var i = 1;
         for (var userID in this.props.users) {
           var user = this.props.users[userID];
           userComponents.push(

@@ -12,6 +12,7 @@ import FontIcon from 'react-md/lib/FontIcons';
 import Dropzone from "react-dropzone";
 import Moment from "react-moment";
 
+//import userChanged from "/actions/admin/watchUsers";
 
 const REJECT_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -20,11 +21,12 @@ class UserCard extends Component {
     constructor() {
         super();
         this.state = {
-          editMode: false
+            isAdmin: true,
+
         };
         this.handleDropFile = this.handleDropFile.bind(this);
-        // this.changeEditMode = this.changeEditMode.bind(this);
-        // console.log(this.changeEditMode);
+        this.changeIsAdmin = this.changeIsAdmin.bind(this);
+        this.changeIsMember = this.changeIsMember.bind(this);
     }
 
     handleDropFile(acceptedFiles, rejectedFiles) {
@@ -41,24 +43,17 @@ class UserCard extends Component {
         }
         this.props.uploadResume(this.props.user.userID,acceptedFiles[0]);
     }
-    changeIsAdmin = (event) =>{
-        console.log(event);
-        this.props.dispatch({
-            type: actionTypes.isAdminChanged,
-            payload: event
-        });
+
+    changeIsAdmin(){
+
+        this.props.isAdminChanged(this.props.user.userID, !this.props.user.clearances.isAdmin);
     }
-    changeIsMember = (event) =>{
-        console.log(event);
-        console.log(this);
-        this.props.dispatch({
-            type: actionTypes.isMemberChanged,
-            payload: event
-        });
+
+    changeIsMember(){
+        this.props.isMemberChanged(this.props.user.userID, !this.props.user.clearances.isMember);
     }
-    changeEditMode = (event) =>{
-        this.setState({editMode: event});
-    }
+
+
     changeMemberID(event){
     }
 
@@ -85,9 +80,9 @@ class UserCard extends Component {
       if(clearances){
         clearancesComp = [
           <div key={1} className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone md-font-bold">Is Admin:&nbsp;</div>,
-          <div key={2} className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><Switch id="admin-checkbox" name="is-admin" aria-label="Is Admin" onChange={this.changeIsAdmin} checked={clearances.isAdmin} disabled={!this.state.editMode}/></div>,
+          <div key={2} className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><input type="checkbox" id="admin-checkbox" name="is-admin" aria-label="Is Admin" onChange={this.changeIsAdmin} checked={clearances.isAdmin}/></div>,
           <div key={3} className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone md-font-bold">Is Member:&nbsp;</div>,
-          <div key={4} className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><Switch id="member-checkbox" name="is-admin" aria-label="Is Member" onChange={this.changeIsMember} checked={clearances.isMember} disabled={!this.state.editMode}/></div>
+          <div key={4} className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><input type="checkbox" id="admin-checkbox" name="is-admin" aria-label="Is Member" onChange={this.changeIsMember} checked={clearances.isMember}/></div>
         ];
       };
       return (
@@ -99,7 +94,7 @@ class UserCard extends Component {
                 </div>
                 <div className="md-cell md-cell--6 md-cell--12-tablet md-cell--12-phone md-font-bold">
                   <CardText>
-                    <Switch id="edit-checkbox" name="edit-mode" label="Edit Mode" onChange={this.changeEditMode} checked={this.state.editMode}/>
+
                   </CardText>
                 </div>
               </div>
