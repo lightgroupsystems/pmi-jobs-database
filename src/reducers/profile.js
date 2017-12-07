@@ -31,6 +31,9 @@ export default function profile(state = initialState, action) {
         case actionTypes.isMemberChanged:
             var user = { ...state.user, isMember: action.payload };
             return { ...state, user };
+        case actionTypes.isCompanyChanged:
+            var user = { ...state.user, isCompany: action.payload };
+            return {...state, user};
         default:
             return state;
     }

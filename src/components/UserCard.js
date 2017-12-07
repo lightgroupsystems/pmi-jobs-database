@@ -6,13 +6,10 @@ import Card from "react-md/lib/Cards/Card";
 import {Switch,TextField } from "react-md";
 import LinearLoading from "../components/LinearLoading";
 import actionTypes from '../constants/userCardTypes';
-
 import FontIcon from 'react-md/lib/FontIcons';
-
 import Dropzone from "react-dropzone";
 import Moment from "react-moment";
 
-//import userChanged from "/actions/admin/watchUsers";
 
 const REJECT_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -22,11 +19,11 @@ class UserCard extends Component {
         super();
         this.state = {
             isAdmin: true,
-
         };
         this.handleDropFile = this.handleDropFile.bind(this);
         this.changeIsAdmin = this.changeIsAdmin.bind(this);
         this.changeIsMember = this.changeIsMember.bind(this);
+        this.changeIsCompany = this.changeIsCompany.bind(this);
     }
 
     handleDropFile(acceptedFiles, rejectedFiles) {
@@ -45,7 +42,6 @@ class UserCard extends Component {
     }
 
     changeIsAdmin(){
-
         this.props.isAdminChanged(this.props.user.userID, !this.props.user.clearances.isAdmin);
     }
 
@@ -53,6 +49,9 @@ class UserCard extends Component {
         this.props.isMemberChanged(this.props.user.userID, !this.props.user.clearances.isMember);
     }
 
+    changeIsCompany(){
+        this.props.isCompanyChanged(this.props.user.userID, !this.props.user.clearances.isCompany);
+    }
 
     changeMemberID(event){
     }
@@ -82,7 +81,9 @@ class UserCard extends Component {
           <div key={1} className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone md-font-bold">Is Admin:&nbsp;</div>,
           <div key={2} className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><input type="checkbox" id="admin-checkbox" name="is-admin" aria-label="Is Admin" onChange={this.changeIsAdmin} checked={clearances.isAdmin}/></div>,
           <div key={3} className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone md-font-bold">Is Member:&nbsp;</div>,
-          <div key={4} className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><input type="checkbox" id="admin-checkbox" name="is-admin" aria-label="Is Member" onChange={this.changeIsMember} checked={clearances.isMember}/></div>
+          <div key={4} className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><input type="checkbox" id="admin-checkbox" name="is-admin" aria-label="Is Member" onChange={this.changeIsMember} checked={clearances.isMember}/></div>,
+          <div key={5} className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone md-font-bold">Is Company:&nbsp;</div>,
+          <div key={6} className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><input type="checkbox" id="admin-checkbox" name="is-admin" aria-label="Is Company" onChange={this.changeIsCompany} checked={clearances.isCompany}/></div>
         ];
       };
       return (
