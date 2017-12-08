@@ -6,7 +6,6 @@ const initialState =
     };
 
 export default function UserCard(state = initialState, action) {
-    console.log(action.type);
     switch (action.type) {
         case actionTypes.isAdminChanged:
             var user = { ...state.user, isAdmin: action.payload };
@@ -17,6 +16,10 @@ export default function UserCard(state = initialState, action) {
             return { ...state, user };
 
         case actionTypes.isCompanyChanged:
+            var user = { ...state.user, isCompany: action.payload };
+            return { ...state, user };
+
+        case actionTypes.isUserDeleted:
             var user = { ...state.user, isCompany: action.payload };
             return { ...state, user };
 

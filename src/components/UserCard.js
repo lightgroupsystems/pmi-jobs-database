@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import CardText from "react-md/lib/Cards/CardText";
 import CardTitle from "react-md/lib/Cards/CardTitle";
 import Card from "react-md/lib/Cards/Card";
-import {Switch,TextField } from "react-md";
+import {Switch,TextField,Button, DialogContainer, Checkbox } from "react-md";
 import LinearLoading from "../components/LinearLoading";
 import actionTypes from '../constants/userCardTypes';
 import FontIcon from 'react-md/lib/FontIcons';
@@ -19,11 +19,14 @@ class UserCard extends Component {
         super();
         this.state = {
             isAdmin: true,
+            visible: false
         };
         this.handleDropFile = this.handleDropFile.bind(this);
         this.changeIsAdmin = this.changeIsAdmin.bind(this);
         this.changeIsMember = this.changeIsMember.bind(this);
         this.changeIsCompany = this.changeIsCompany.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.hide = this.hide.bind(this);
     }
 
     handleDropFile(acceptedFiles, rejectedFiles) {
@@ -53,14 +56,30 @@ class UserCard extends Component {
         this.props.isCompanyChanged(this.props.user.userID, !this.props.user.clearances.isCompany);
     }
 
+    handleDelete(){
+        this.hide();
+        console.log("Se deletea user")
+        this.props.isUserDeleted(this.props.user.userID);
+    }
+
+    show = () => {
+        this.setState({ visible: true });
+    };
+
+    hide = () => {
+        this.setState({ visible: false });
+    };
+
+
     changeMemberID(event){
     }
 
     render() {
       let resumeComp;
       let resumeDateJs;
-      const {email, memberID, name, resume, resumeDate,clearances} = this.props.user;
+      const {email, memberID, name, surname, resume, resumeDate,clearances} = this.props.user;
       const {isLoading} = this.props;
+      const { visible } = this.state;
 
       if (resume)
       {
@@ -77,27 +96,32 @@ class UserCard extends Component {
       }
       let clearancesComp;
       if(clearances){
-        clearancesComp = [
-          <div key={1} className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone md-font-bold">Is Admin:&nbsp;</div>,
-          <div key={2} className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><input type="checkbox" id="admin-checkbox" name="is-admin" aria-label="Is Admin" onChange={this.changeIsAdmin} checked={clearances.isAdmin}/></div>,
-          <div key={3} className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone md-font-bold">Is Member:&nbsp;</div>,
-          <div key={4} className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><input type="checkbox" id="admin-checkbox" name="is-admin" aria-label="Is Member" onChange={this.changeIsMember} checked={clearances.isMember}/></div>,
-          <div key={5} className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone md-font-bold">Is Company:&nbsp;</div>,
-          <div key={6} className="md-cell md-cell--8 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><input type="checkbox" id="admin-checkbox" name="is-admin" aria-label="Is Company" onChange={this.changeIsCompany} checked={clearances.isCompany}/></div>
-        ];
+          clearancesComp = [
+              <div key={1} className="md-cell md-cell--6 md-cell--4-tablet md-cell--12-phone md-font-bold">Is admin:&nbsp;</div>,
+              <div key={2} className="md-cell md-cell--6 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><input type="checkbox" id="admin-checkbox" name="is-admin" aria-label="is admin" onChange={this.changeIsAdmin} checked={clearances.isAdmin}/></div>,
+              <div key={3} className="md-cell md-cell--6 md-cell--4-tablet md-cell--12-phone md-font-bold">Is member:&nbsp;</div>,
+              <div key={4} className="md-cell md-cell--6 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><input type="checkbox" id="admin-checkbox" name="is-admin" aria-label="is member" onChange={this.changeIsMember} checked={clearances.isMember}/></div>,
+              <div key={5} className="md-cell md-cell--6 md-cell--4-tablet md-cell--12-phone md-font-bold">Is company:&nbsp;</div>,
+              <div key={6} className="md-cell md-cell--6 md-cell--4-tablet md-cell--12-phone text-overflow-ellipsis"><input type="checkbox" id="admin-checkbox" name="is-admin" aria-label="is company" onChange={this.changeIsCompany} checked={clearances.isCompany}/></div>
+          ];
       };
+
+      const actions = [];
+      actions.push(<Button raised primary onClick={this.hide}>Cancel</Button>);
+      actions.push(<Button raised primary onClick={this.handleDelete}>Confirm</Button>);
+
       return (
           <Card className="md-cell md-cell--4 md-cell--4-tablet md-cell--12-phone">
               <LinearLoading id="register-loading" isLoading={isLoading}/>
               <div className="md-grid">
                 <div className="md-cell md-cell--6 md-cell--12-tablet md-cell--12-phone text-overflow-ellipsis">
-                  <CardTitle title={name}/>
+                  <CardTitle title={name + ' ' + surname}/>
                 </div>
-                <div className="md-cell md-cell--6 md-cell--12-tablet md-cell--12-phone md-font-bold">
-                  <CardText>
+                  <div className="md-cell md-cell--6 md-cell--12-tablet md-cell--12-phone text-overflow-ellipsis">
+                      <CardText>
 
-                  </CardText>
-                </div>
+                      </CardText>
+                  </div>
               </div>
               <CardText>
                   <div className="md-grid">
@@ -109,6 +133,12 @@ class UserCard extends Component {
                       </div>
                       {clearancesComp}
                       {resumeComp}
+                  </div>
+                  <div>
+                      <Button raised iconBefore={true} onClick={this.show}>
+                          Delete
+                      </Button>
+                      <DialogContainer id="simple-action-dialog" visible={visible} onHide={this.hide} actions={actions} title="Delete user?"></DialogContainer>
                   </div>
                   <br/>
                   {dropZone}

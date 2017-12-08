@@ -56,7 +56,6 @@ class Admin extends Component {
   };
 
   render() {
-    console.log("Rendering admin");
     var content;
     switch (this.props.currentMenuSelected) {
       case "users":

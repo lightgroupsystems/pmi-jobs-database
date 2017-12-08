@@ -3,7 +3,7 @@ import {bindActionCreators} from "redux";
 import UserCard from '../components/UserCard';
 import {uploadResume} from "../actions/uploadResume";
 import {sendNotification} from "../actions/notifications";
-import {isAdminChanged, isMemberChanged, isCompanyChanged} from "../actions/admin/watchUsers"
+import {isAdminChanged, isMemberChanged, isCompanyChanged, isUserDeleted} from "../actions/admin/watchUsers"
 
 const mapStateToProps = (state) => {
     return ({
@@ -18,6 +18,7 @@ const mapDispatchToProps = (dispatch) => {
       isAdminChanged,
       isMemberChanged,
       isCompanyChanged,
+      isUserDeleted,
       dispatch
     }, dispatch)
 }
