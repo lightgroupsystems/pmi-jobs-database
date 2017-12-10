@@ -19,7 +19,7 @@
 * `npm start` runs the app in development mode. Open [http://localhost:3000]to view it in the browser and the page should reload whenever you make edits
 
 <p>
-Do not forget to configure firebase! see what you have <a href="https://github.com/lightgroupsystems/pmi-jobs-database/blob/master/src/firebaseConsoleReadme.txt">
+Do not forget to configure firebase! see what you have to do <a href="https://github.com/lightgroupsystems/pmi-jobs-database/blob/master/src/firebaseConsoleReadme.txt">
 here<a/>
 </p>
 </div>
