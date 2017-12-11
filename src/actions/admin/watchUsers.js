@@ -69,3 +69,72 @@ export const offWatchUsers = () => {
     return firebase.database().ref(`users`).off();
   }
 }
+
+export const isAdminChanged = (userID, val) => {
+  var updates = {};
+
+    updates['/clearances/' + userID + '/isAdmin'] = val;
+
+    firebase.database().ref().update(updates).then(function() {
+        console.log("User succesfully updated.");
+    }).catch(function(error) {
+        console.error("Error updating document: ", error);
+    });
+
+
+    return {
+        type: actionTypes.ClearanceChanged,
+        payload: {userID}
+    }
+}
+
+export const isMemberChanged = (userID, val) => {
+    var updates = {};
+
+    updates['/clearances/' + userID + '/isMember'] = val;
+
+    firebase.database().ref().update(updates).then(function() {
+        console.log("User succesfully updated.");
+    }).catch(function(error) {
+        console.error("Error updating document: ", error);
+    });
+
+
+    return {
+        type: actionTypes.ClearanceChanged,
+        payload: {userID}
+    }
+}
+
+export const isCompanyChanged = (userID, val) => {
+    var updates = {};
+
+    updates['/clearances/' + userID + '/isCompany'] = val;
+
+    firebase.database().ref().update(updates).then(function() {
+        console.log("User succesfully updated.");
+    }).catch(function(error) {
+        console.error("Error updating document: ", error);
+    });
+    return {
+        type: actionTypes.ClearanceChanged,
+        payload: {userID}
+    }
+}
+
+export const isUserDeleted = (userID)=>{
+    var updates = {};
+
+    updates['/clearances/' + userID] = null;
+    updates['/users/' + userID] = null;
+
+    firebase.database().ref().update(updates).then(function() {
+        console.log("Document successfully deleted!");
+    }).catch(function(error) {
+        console.error("Error removing document: ", error);
+    });
+    return {
+        type: actionTypes.UserRemoved,
+        payload: {userID}
+    }
+}
